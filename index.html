@@ -33,6 +33,7 @@
             align-items: center;
         }
 
+        /* --- LOCK SCREEN --- */
         #lock-screen {
             background: var(--card-bg);
             padding: 2.5rem;
@@ -98,6 +99,7 @@
             display: none;
         }
 
+        /* --- MAIN DASHBOARD --- */
         #dashboard {
             display: none;
             width: 100%;
@@ -182,6 +184,7 @@
             color: var(--text-muted);
         }
 
+        /* --- MODAL INPUT --- */
         .modal {
             display: none;
             position: fixed;
@@ -277,58 +280,58 @@
 
         <div class="grid-container">
             <!-- SLOT 1 -->
-            <div class="card" onclick="openModal('1. LIVE FIX AGUSTUS 2026', 'live-fix-agustus-2026.yml')">
+            <div class="card" onclick="openModal('1. Live Fix Tertinggi', 'livefixtertinggi.yml')">
                 <span class="card-number">01</span>
                 <div class="card-content">
-                    <span class="card-badge">live-fix-agustus-2026.yml</span>
-                    <div class="card-title">1. LIVE FIX AGUSTUS 2026</div>
-                    <div class="card-desc">Target Workflow: live-fix-agustus-2026.yml</div>
+                    <span class="card-badge">livefixtertinggi.yml</span>
+                    <div class="card-title">1. Live Fix Tertinggi</div>
+                    <div class="card-desc">Target Workflow: livefixtertinggi.yml</div>
                 </div>
             </div>
 
             <!-- SLOT 2 -->
-            <div class="card" onclick="openModal('2. Live Rutin Harian', 'live-harian.yml')">
+            <div class="card" onclick="openModal('2. Live Server 2', 'live2.yml')">
                 <span class="card-number">02</span>
                 <div class="card-content">
-                    <span class="card-badge">live-harian.yml</span>
-                    <div class="card-title">2. Live Rutin Harian</div>
-                    <div class="card-desc">Target Workflow: live-harian.yml</div>
+                    <span class="card-badge">live2.yml</span>
+                    <div class="card-title">2. Live Server 2</div>
+                    <div class="card-desc">Target Workflow: live2.yml</div>
                 </div>
             </div>
 
             <!-- SLOT 3 -->
-            <div class="card" onclick="openModal('3. Live Special Event', 'live-event.yml')">
+            <div class="card" onclick="openModal('3. Live Server 3', 'live3.yml')">
                 <span class="card-number">03</span>
                 <div class="card-content">
-                    <span class="card-badge">live-event.yml</span>
-                    <div class="card-title">3. Live Special Event</div>
-                    <div class="card-desc">Target Workflow: live-event.yml</div>
+                    <span class="card-badge">live3.yml</span>
+                    <div class="card-title">3. Live Server 3</div>
+                    <div class="card-desc">Target Workflow: live3.yml</div>
                 </div>
             </div>
 
             <!-- SLOT 4 -->
-            <div class="card" onclick="openModal('4. Backup Stream Utama', 'live-backup-a.yml')">
+            <div class="card" onclick="openModal('4. Live Server 4', 'live4.yml')">
                 <span class="card-number">04</span>
                 <div class="card-content">
-                    <span class="card-badge">live-backup-a.yml</span>
-                    <div class="card-title">4. Backup Stream Utama</div>
-                    <div class="card-desc">Target Workflow: live-backup-a.yml</div>
+                    <span class="card-badge">live4.yml</span>
+                    <div class="card-title">4. Live Server 4</div>
+                    <div class="card-desc">Target Workflow: live4.yml</div>
                 </div>
             </div>
 
             <!-- SLOT 5 -->
-            <div class="card" onclick="openModal('5. Testing / Trial Live', 'live-testing.yml')">
+            <div class="card" onclick="openModal('5. Live Server 5', 'live5.yml')">
                 <span class="card-number">05</span>
                 <div class="card-content">
-                    <span class="card-badge">live-testing.yml</span>
-                    <div class="card-title">5. Testing / Trial Live</div>
-                    <div class="card-desc">Target Workflow: live-testing.yml</div>
+                    <span class="card-badge">live5.yml</span>
+                    <div class="card-title">5. Live Server 5</div>
+                    <div class="card-desc">Target Workflow: live5.yml</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL INPUT -->
+    <!-- MODAL FORM -->
     <div id="action-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -359,8 +362,15 @@
     </div>
 
     <script>
-        const PIN = "123456"; // PIN 6 digit akses
+        // --- KONFIGURASI ACCESS ---
+        const PIN = "786786"; // PIN Kunci Akses Baru
         
+        // --- KONFIGURASI GITHUB ---
+        const GITHUB_USERNAME = "haultvlivestream-sudo";
+        const GITHUB_REPO = "liveyt-denganlogo2026-amanlag";
+        const GITHUB_TOKEN = "PASTE_TOKEN_PAT_KAMU_DISINI"; // Isi Personal Access Token GitHub kamu di sini nanti
+
+        // --- AUTHENTICATION ---
         function validatePin() {
             const inputPin = document.getElementById('pin-input').value;
             const errorMsg = document.getElementById('error-msg');
@@ -378,6 +388,7 @@
             if (e.key === 'Enter') validatePin();
         });
 
+        // --- MODAL CONTROL ---
         function openModal(title, ymlFile) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('yml-display').innerText = ymlFile;
@@ -390,7 +401,8 @@
             document.getElementById('live-form').reset();
         }
 
-        function triggerGithubAction(e) {
+        // --- HANDLER TRIGGER GITHUB ACTION ---
+        async function triggerGithubAction(e) {
             e.preventDefault();
             
             const targetYml = document.getElementById('selected-yml').value;
@@ -398,22 +410,57 @@
             const rtmpKey = document.getElementById('rtmp-key').value;
             const btn = document.getElementById('submit-btn');
 
-            btn.innerText = "Memproses...";
+            btn.innerText = "Memproses Ke GitHub...";
             btn.disabled = true;
 
-            setTimeout(() => {
-                alert(`[TEST SEMENTARA]\n\n` +
-                      `• Target File: ${targetYml}\n` +
-                      `• Link YouTube: ${ytUrl}\n` +
-                      `• Key RTMP: ${rtmpKey}\n\n` +
-                      `Sistem berhasil memicu file .yml terkait!`);
-                
+            // Jika belum memasukkan Token PAT
+            if (GITHUB_TOKEN === "PASTE_TOKEN_PAT_KAMU_DISINI") {
+                setTimeout(() => {
+                    alert(`[TEST SEMENTARA]\n\n` +
+                          `• Target Workflow: ${targetYml}\n` +
+                          `• Link Video: ${ytUrl}\n` +
+                          `• RTMP Key: ${rtmpKey}\n\n` +
+                          `Sistem siap dipicu! Masukkan Token PAT GitHub pada variabel GITHUB_TOKEN di kodenya agar terhubung ke GitHub asli.`);
+                    btn.innerText = "Jalankan Live";
+                    btn.disabled = false;
+                    closeModal();
+                }, 800);
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/actions/workflows/${targetYml}/dispatches`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/vnd.github+json',
+                        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                        'X-GitHub-Api-Version': '2022-11-28'
+                    },
+                    body: JSON.stringify({
+                        ref: 'main', // Nama branch di repositori GitHub
+                        inputs: {
+                            youtube_url: ytUrl,
+                            rtmp_key: rtmpKey
+                        }
+                    })
+                });
+
+                if (response.ok || response.status === 204) {
+                    alert(`BERHASIL!\n\nWorkflow '${targetYml}' berhasil dijalankan otomatis di GitHub Actions.`);
+                    closeModal();
+                } else {
+                    const errData = await response.json();
+                    alert(`GAGAL: ${errData.message || "Cek kembali Token atau Nama File .yml di GitHub"}`);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan koneksi ke GitHub API.");
+            } finally {
                 btn.innerText = "Jalankan Live";
                 btn.disabled = false;
-                closeModal();
-            }, 800);
+            }
         }
     </script>
 </body>
-  </html>
-  
+                                                                    </html>
+        
