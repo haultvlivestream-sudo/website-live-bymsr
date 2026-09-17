@@ -103,7 +103,7 @@
         #dashboard {
             display: none;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             padding: 2rem 1rem;
         }
 
@@ -125,15 +125,15 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             box-shadow: var(--shadow);
             cursor: pointer;
             transition: transform 0.2s, border-color 0.2s;
@@ -150,7 +150,7 @@
             position: absolute;
             top: 10px;
             right: 15px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #f1f5f9;
             z-index: 0;
@@ -169,18 +169,18 @@
             font-weight: 600;
             padding: 4px 8px;
             border-radius: 6px;
-            margin-bottom: 0.75rem;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
             margin-bottom: 0.5rem;
         }
 
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
         .card-desc {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
 
@@ -268,14 +268,15 @@
         <h2>Control System</h2>
         <p>Masukkan 6 digit PIN Akses</p>
         <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus>
-        <button class="btn-submit" onclick="validatePin()">Masuk</button>
-        <div id="error-msg" class="error-msg">PIN Salah! Silakan coba lagi.</div>
+        <button class="btn-submit" onclick="unlockDashboard()">Masuk</button>
+        <div id="error-msg" class="error-msg">PIN Wajib Diisi!</div>
     </div>
 
     <!-- MAIN DASHBOARD -->
     <div id="dashboard">
         <header>
             <h1>Control Panel <span>IHYA' 7 TV</span></h1>
+            <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem;">Keluar</button>
         </header>
 
         <div class="grid-container">
@@ -290,7 +291,7 @@
             </div>
 
             <!-- SLOT 2 -->
-            <div class="card" onclick="openModal('2. Live Fix Agust Logo Di Kiri Atas', 'Scriptpercobaan.yml')">
+            <div class="card" onclick="openModal('2. Live Fix Agust Logo Kiri Atas', 'Scriptpercobaan.yml')">
                 <span class="card-number">02</span>
                 <div class="card-content">
                     <span class="card-badge">Scriptpercobaan.yml</span>
@@ -300,11 +301,11 @@
             </div>
 
             <!-- SLOT 3 -->
-            <div class="card" onclick="openModal('3. Live Khusus Channel Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
+            <div class="card" onclick="openModal('3. Live Khusus Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
                 <span class="card-number">03</span>
                 <div class="card-content">
                     <span class="card-badge">scriptkhususlivehabibomarcom.yml</span>
-                    <div class="card-title">3. Live Khusus Channel Habib Umar</div>
+                    <div class="card-title">3. Live Khusus Habib Umar</div>
                     <div class="card-desc">Target Workflow: scriptkhususlivehabibomarcom.yml</div>
                 </div>
             </div>
@@ -326,6 +327,56 @@
                     <span class="card-badge">live5.yml</span>
                     <div class="card-title">5. Live Server 5</div>
                     <div class="card-desc">Target Workflow: live5.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 6 -->
+            <div class="card" onclick="openModal('6. Live Server 6', 'live6.yml')">
+                <span class="card-number">06</span>
+                <div class="card-content">
+                    <span class="card-badge">live6.yml</span>
+                    <div class="card-title">6. Live Server 6</div>
+                    <div class="card-desc">Target Workflow: live6.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 7 -->
+            <div class="card" onclick="openModal('7. Live Server 7', 'live7.yml')">
+                <span class="card-number">07</span>
+                <div class="card-content">
+                    <span class="card-badge">live7.yml</span>
+                    <div class="card-title">7. Live Server 7</div>
+                    <div class="card-desc">Target Workflow: live7.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 8 -->
+            <div class="card" onclick="openModal('8. Live Server 8', 'live8.yml')">
+                <span class="card-number">08</span>
+                <div class="card-content">
+                    <span class="card-badge">live8.yml</span>
+                    <div class="card-title">8. Live Server 8</div>
+                    <div class="card-desc">Target Workflow: live8.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 9 -->
+            <div class="card" onclick="openModal('9. Live Server 9', 'live9.yml')">
+                <span class="card-number">09</span>
+                <div class="card-content">
+                    <span class="card-badge">live9.yml</span>
+                    <div class="card-title">9. Live Server 9</div>
+                    <div class="card-desc">Target Workflow: live9.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 10 -->
+            <div class="card" onclick="openModal('10. Live Server 10', 'live10.yml')">
+                <span class="card-number">10</span>
+                <div class="card-content">
+                    <span class="card-badge">live10.yml</span>
+                    <div class="card-title">10. Live Server 10</div>
+                    <div class="card-desc">Target Workflow: live10.yml</div>
                 </div>
             </div>
         </div>
@@ -362,27 +413,30 @@
     </div>
 
     <script>
-        // --- AUTHENTICATION PIN ---
-        const PIN = "786786";
+        let userPin = "";
 
-        function validatePin() {
-            const inputPin = document.getElementById('pin-input').value;
-            const errorMsg = document.getElementById('error-msg');
-
-            if (inputPin === PIN) {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-            } else {
-                errorMsg.style.display = 'block';
-                document.getElementById('pin-input').value = '';
+        function unlockDashboard() {
+            const input = document.getElementById('pin-input').value;
+            if (!input) {
+                document.getElementById('error-msg').style.display = 'block';
+                return;
             }
+            userPin = input;
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function logout() {
+            userPin = "";
+            document.getElementById('pin-input').value = "";
+            document.getElementById('lock-screen').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
         }
 
         document.getElementById('pin-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') validatePin();
+            if (e.key === 'Enter') unlockDashboard();
         });
 
-        // --- MODAL CONTROL ---
         function openModal(title, ymlFile) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('yml-display').innerText = ymlFile;
@@ -395,7 +449,6 @@
             document.getElementById('live-form').reset();
         }
 
-        // --- HANDLER TRIGGER VIA VERCEL SERVERLESS FUNCTION ---
         async function triggerGithubAction(e) {
             e.preventDefault();
             
@@ -408,13 +461,11 @@
             btn.disabled = true;
 
             try {
-                // Mengirimkan request ke Backend Vercel /api/trigger
                 const response = await fetch('/api/trigger', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        pin: userPin, // PIN diverifikasi di backend Vercel
                         targetYml: targetYml,
                         ytUrl: ytUrl,
                         rtmpKey: rtmpKey
@@ -424,10 +475,13 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert(`BERHASIL!\n\nWorkflow '${targetYml}' berhasil dijalankan di GitHub Actions.`);
+                    alert(`BERHASIL!\n\n${result.message}`);
                     closeModal();
                 } else {
-                    alert(`GAGAL: ${result.message || "Terjadi kesalahan."}`);
+                    alert(`GAGAL: ${result.message}`);
+                    if (response.status === 401) {
+                        logout(); // Kembali ke lockscreen jika PIN salah
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -439,5 +493,5 @@
         }
     </script>
 </body>
-    </html>
+                        </html>
     
