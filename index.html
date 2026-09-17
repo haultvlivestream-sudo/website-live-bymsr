@@ -362,15 +362,9 @@
     </div>
 
     <script>
-        // --- KONFIGURASI ACCESS ---
-        const PIN = "786786"; // PIN Kunci Akses Baru
-        
-        // --- KONFIGURASI GITHUB ---
-        const GITHUB_USERNAME = "haultvlivestream-sudo";
-        const GITHUB_REPO = "liveyt-denganlogo2026-amanlag";
-        const GITHUB_TOKEN = "PASTE_TOKEN_PAT_KAMU_DISINI"; // Isi Personal Access Token GitHub kamu di sini nanti
+        // --- AUTHENTICATION PIN ---
+        const PIN = "786786";
 
-        // --- AUTHENTICATION ---
         function validatePin() {
             const inputPin = document.getElementById('pin-input').value;
             const errorMsg = document.getElementById('error-msg');
@@ -401,7 +395,7 @@
             document.getElementById('live-form').reset();
         }
 
-        // --- HANDLER TRIGGER GITHUB ACTION ---
+        // --- HANDLER TRIGGER VIA VERCEL SERVERLESS FUNCTION ---
         async function triggerGithubAction(e) {
             e.preventDefault();
             
@@ -413,48 +407,31 @@
             btn.innerText = "Memproses Ke GitHub...";
             btn.disabled = true;
 
-            // Jika belum memasukkan Token PAT
-            if (GITHUB_TOKEN === "PASTE_TOKEN_PAT_KAMU_DISINI") {
-                setTimeout(() => {
-                    alert(`[TEST SEMENTARA]\n\n` +
-                          `• Target Workflow: ${targetYml}\n` +
-                          `• Link Video: ${ytUrl}\n` +
-                          `• RTMP Key: ${rtmpKey}\n\n` +
-                          `Sistem siap dipicu! Masukkan Token PAT GitHub pada variabel GITHUB_TOKEN di kodenya agar terhubung ke GitHub asli.`);
-                    btn.innerText = "Jalankan Live";
-                    btn.disabled = false;
-                    closeModal();
-                }, 800);
-                return;
-            }
-
             try {
-                const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/actions/workflows/${targetYml}/dispatches`, {
+                // Mengirimkan request ke Backend Vercel /api/trigger
+                const response = await fetch('/api/trigger', {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/vnd.github+json',
-                        'Authorization': `Bearer ${GITHUB_TOKEN}`,
-                        'X-GitHub-Api-Version': '2022-11-28'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        ref: 'main', // Nama branch di repositori GitHub
-                        inputs: {
-                            youtube_url: ytUrl,
-                            rtmp_key: rtmpKey
-                        }
+                        targetYml: targetYml,
+                        ytUrl: ytUrl,
+                        rtmpKey: rtmpKey
                     })
                 });
 
-                if (response.ok || response.status === 204) {
-                    alert(`BERHASIL!\n\nWorkflow '${targetYml}' berhasil dijalankan otomatis di GitHub Actions.`);
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(`BERHASIL!\n\nWorkflow '${targetYml}' berhasil dijalankan di GitHub Actions.`);
                     closeModal();
                 } else {
-                    const errData = await response.json();
-                    alert(`GAGAL: ${errData.message || "Cek kembali Token atau Nama File .yml di GitHub"}`);
+                    alert(`GAGAL: ${result.message || "Terjadi kesalahan."}`);
                 }
             } catch (error) {
                 console.error(error);
-                alert("Terjadi kesalahan koneksi ke GitHub API.");
+                alert("Terjadi kesalahan koneksi server.");
             } finally {
                 btn.innerText = "Jalankan Live";
                 btn.disabled = false;
@@ -462,5 +439,5 @@
         }
     </script>
 </body>
-                                                                    </html>
-        
+    </html>
+    
