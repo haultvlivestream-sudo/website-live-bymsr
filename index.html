@@ -269,7 +269,7 @@
         <p>Masukkan 6 digit PIN Akses</p>
         <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus>
         <button class="btn-submit" onclick="unlockDashboard()">Masuk</button>
-        <div id="error-msg" class="error-msg">PIN Wajib Diisi!</div>
+        <div id="error-msg" class="error-msg">PIN Salah! Silakan coba lagi.</div>
     </div>
 
     <!-- MAIN DASHBOARD -->
@@ -415,15 +415,44 @@
     <script>
         let userPin = "";
 
-        function unlockDashboard() {
+        async function unlockDashboard() {
             const input = document.getElementById('pin-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('#lock-screen .btn-submit');
+
             if (!input) {
-                document.getElementById('error-msg').style.display = 'block';
+                errorMsg.innerText = "PIN Wajib Diisi!";
+                errorMsg.style.display = 'block';
                 return;
             }
-            userPin = input;
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
+
+            btn.innerText = "Memeriksa...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: input })
+                });
+
+                if (response.ok) {
+                    userPin = input;
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    errorMsg.style.display = 'none';
+                } else {
+                    errorMsg.innerText = "PIN Salah!";
+                    errorMsg.style.display = 'block';
+                    document.getElementById('pin-input').value = "";
+                }
+            } catch (error) {
+                errorMsg.innerText = "Terjadi kesalahan koneksi.";
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.innerText = "Masuk";
+                btn.disabled = false;
+            }
         }
 
         function logout() {
@@ -465,7 +494,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        pin: userPin, // PIN diverifikasi di backend Vercel
+                        pin: userPin,
                         targetYml: targetYml,
                         ytUrl: ytUrl,
                         rtmpKey: rtmpKey
@@ -480,7 +509,7 @@
                 } else {
                     alert(`GAGAL: ${result.message}`);
                     if (response.status === 401) {
-                        logout(); // Kembali ke lockscreen jika PIN salah
+                        logout();
                     }
                 }
             } catch (error) {
@@ -493,5 +522,5 @@
         }
     </script>
 </body>
-                        </html>
+    </html>
     
