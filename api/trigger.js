@@ -3,14 +3,21 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { targetYml, ytUrl, rtmpKey } = req.body;
+    const { pin, targetYml, ytUrl, rtmpKey } = req.body;
 
+    // 1. Verifikasi PIN dari Vercel Secret
+    const SERVER_PIN = process.env.WEB_PIN || "786786";
+    if (pin !== SERVER_PIN) {
+        return res.status(401).json({ message: 'PIN Akses Salah!' });
+    }
+
+    // 2. Ambil Token GitHub PAT dari Vercel Secret
     const GITHUB_USERNAME = "haultvlivestream-sudo";
     const GITHUB_REPO = "liveyt-denganlogo2026-amanlag";
     const GITHUB_TOKEN = process.env.GH_PAT_TOKEN;
 
     if (!GITHUB_TOKEN) {
-        return res.status(500).json({ message: 'Token GH_PAT_TOKEN belum terbaca di Vercel.' });
+        return res.status(500).json({ message: 'Token GH_PAT_TOKEN belum diatur di Vercel.' });
     }
 
     try {
@@ -25,8 +32,8 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 ref: 'main',
                 inputs: {
-                    link_youtube: ytUrl,    // Sesuaikan dengan .yml
-                    kunci_rtmp: rtmpKey     // Sesuaikan dengan .yml
+                    link_youtube: ytUrl,
+                    kunci_rtmp: rtmpKey
                 }
             })
         });
@@ -40,5 +47,4 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan koneksi server.' });
     }
-            }
-            
+}
