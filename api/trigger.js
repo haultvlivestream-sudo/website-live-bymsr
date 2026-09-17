@@ -5,9 +5,9 @@ export default async function handler(req, res) {
 
     const { pin, targetYml, ytUrl, rtmpKey } = req.body;
 
-    // 1. Verifikasi PIN dari Vercel Secret
-    const SERVER_PIN = process.env.WEB_PIN || "786786";
-    if (pin !== SERVER_PIN) {
+    // 1. Verifikasi PIN murni dari Vercel Secret (WEB_PIN)
+    const SERVER_PIN = process.env.WEB_PIN;
+    if (!SERVER_PIN || pin !== SERVER_PIN) {
         return res.status(401).json({ message: 'PIN Akses Salah!' });
     }
 
@@ -47,4 +47,5 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan koneksi server.' });
     }
-}
+    }
+    
