@@ -7,10 +7,10 @@ export default async function handler(req, res) {
 
     const GITHUB_USERNAME = "haultvlivestream-sudo";
     const GITHUB_REPO = "liveyt-denganlogo2026-amanlag";
-    const GITHUB_TOKEN = process.env.GH_PAT_TOKEN; // Ini mengambil dari Secret Vercel kamu
+    const GITHUB_TOKEN = process.env.GH_PAT_TOKEN;
 
     if (!GITHUB_TOKEN) {
-        return res.status(500).json({ message: 'Token GH_PAT_TOKEN belum terbaca di Vercel Environment Variables.' });
+        return res.status(500).json({ message: 'Token GH_PAT_TOKEN belum terbaca di Vercel.' });
     }
 
     try {
@@ -25,8 +25,8 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 ref: 'main',
                 inputs: {
-                    youtube_url: ytUrl,
-                    rtmp_key: rtmpKey
+                    link_youtube: ytUrl,    // Sesuaikan dengan .yml
+                    kunci_rtmp: rtmpKey     // Sesuaikan dengan .yml
                 }
             })
         });
@@ -40,5 +40,5 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan koneksi server.' });
     }
-      }
-  
+            }
+            
