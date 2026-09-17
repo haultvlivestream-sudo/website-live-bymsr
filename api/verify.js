@@ -4,12 +4,17 @@ export default function handler(req, res) {
     }
 
     const { pin } = req.body;
-    const SERVER_PIN = process.env.WEB_PIN || "786786";
+    // Mengambil PIN murni dari Vercel Environment Variable (WEB_PIN)
+    const SERVER_PIN = process.env.WEB_PIN;
 
-    // Cek apakah PIN yang diketik sama dengan Secret Vercel
+    if (!SERVER_PIN) {
+        return res.status(500).json({ success: false, message: 'WEB_PIN belum diatur di Vercel Secret.' });
+    }
+
+    // Cek apakah PIN dari user cocok dengan Secret di Vercel
     if (pin === SERVER_PIN) {
         return res.status(200).json({ success: true });
     } else {
         return res.status(401).json({ success: false, message: 'PIN Salah!' });
     }
-          }
+}
